@@ -4,13 +4,20 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 )
 
-func HandleRequest(ctx context.Context, event interface{}) (string, error) {
+func HandleRequest(ctx context.Context, event *events.APIGatewayV2HTTPRequest) (*events.APIGatewayV2HTTPResponse, error) {
 	fmt.Println("event", event)
 
-	return "Hello World", nil
+	return &events.APIGatewayV2HTTPResponse{
+		StatusCode: 200,
+		Body:       "You are awesome",
+		Headers: map[string]string{
+			"Content-Type": "text/plain",
+		},
+	}, nil
 }
 
 func main() {

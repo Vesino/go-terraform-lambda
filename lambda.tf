@@ -15,8 +15,8 @@ data "archive_file" "function_archive" {
 }
 
 // create the lambda function from zip file
-resource "aws_lambda_function" "function" {
-  function_name = "hello_world"
+resource "aws_lambda_function" "hello_world" {
+  function_name = "hello-world"
   description   = "My first hello world function"
   role          = aws_iam_role.lambda.arn
   handler       = local.binary_name
@@ -25,14 +25,10 @@ resource "aws_lambda_function" "function" {
   filename         = local.archive_path
   source_code_hash = data.archive_file.function_archive.output_base64sha256
 
-  // skip timeout
   runtime = "go1.x"
-  // skip tags
-
-  // skip environment variables
 }
 
 resource "aws_cloudwatch_log_group" "log_group" {
-  name              = "/aws/lambda/${aws_lambda_function.function.function_name}"
+  name              = "/aws/lambda/${aws_lambda_function.hello_world.function_name}"
   retention_in_days = 7
 }
