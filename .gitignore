@@ -449,3 +449,6 @@ MigrationBackup/
 .ionide/
 
 # End of https://www.toptal.com/developers/gitignore/api/terraform,go,macos,vs
+
+tf_generated
+.terraform.lock.hcl
