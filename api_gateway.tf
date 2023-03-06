@@ -63,11 +63,18 @@ resource "aws_apigatewayv2_integration" "hello_world_lambda" {
 }
 
 // specify route that will be used to invoke lambda function
-resource "aws_apigatewayv2_route" "hello_world_lambda" {
+# resource "aws_apigatewayv2_route" "hello_world_lambda" {
+#   api_id    = aws_apigatewayv2_api.simple_api.id
+#   route_key = "GET /api/v1/hello"
+#   target    = "integrations/${aws_apigatewayv2_integration.hello_world_lambda.id}"
+# }
+
+resource "aws_apigatewayv2_route" "create_profile_lambda" {
   api_id    = aws_apigatewayv2_api.simple_api.id
-  route_key = "GET /api/v1/hello"
+  route_key = "POST /api/v1/profile"
   target    = "integrations/${aws_apigatewayv2_integration.hello_world_lambda.id}"
 }
+
 
 // provide permission for API GW to invoke lambda function
 resource "aws_lambda_permission" "hello_world_lambda" {
@@ -78,3 +85,4 @@ resource "aws_lambda_permission" "hello_world_lambda" {
 
   source_arn = "${aws_apigatewayv2_api.simple_api.execution_arn}/*/*"
 }
+

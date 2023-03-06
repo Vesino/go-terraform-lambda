@@ -39,3 +39,27 @@ resource "aws_iam_role_policy_attachment" "lambda_logging_policy_attachment" {
   role       = aws_iam_role.lambda.id
   policy_arn = aws_iam_policy.function_logging_policy.arn
 }
+
+data "aws_iam_policy_document" "allow_dynamodb_table_operations" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "dynamodb:PutItem",
+    ]
+
+    resources = [
+      aws_dynamodb_table.profiles.arn,
+    ]
+  }
+}
+
+resource "aws_iam_policy" "dynamodb_lambda_policy" {
+  name        = "TutorialDynamoDBLambdaPolicy"
+  description = "Policy for lambda to operate on dynamodb table"
+  policy      = data.aws_iam_policy_document.allow_dynamodb_table_operations.json
+}
+
+resource "aws_iam_role_policy_attachment" "lambda_dynamodb_policy_attachment" {
+  role       = aws_iam_role.lambda.id
+  policy_arn = aws_iam_policy.dynamodb_lambda_policy.arn
+}
